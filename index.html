@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitor de Gestión Agroindustrial</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="background-animation"></div>
+
+    <div class="app-container">
+      <!-- Header -->
+      <header class="dashboard-header glass-panel fade-in">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <div>
+            <h1>Agro<strong>Monitor</strong></h1>
+            <span class="subtitle">Planta de Procesamiento</span>
+          </div>
+        </div>
+
+        <div class="controls-section">
+          <div class="selector-container">
+            <label for="week-selector">Periodo:</label>
+            <div class="custom-select">
+              <select id="week-selector">
+                <!-- Populated by JS -->
+              </select>
+              <i class="fa-solid fa-chevron-down select-icon"></i>
+            </div>
+          </div>
+
+          <div class="status-indicator">
+            <span class="pulse"></span>
+            <span class="status-text">Tiempo Real</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="dashboard-content">
+        <!-- Top KPI Cards -->
+        <div class="kpi-grid">
+          <!-- Card 1 -->
+          <div
+            class="kpi-card glass-panel fade-in-up"
+            style="--accent-color: #00d2ff; animation-delay: 0.1s"
+          >
+            <div class="kpi-glow"></div>
+            <div class="kpi-header">
+              <span class="kpi-title">Producción Total</span>
+              <div class="kpi-icon">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+            </div>
+            <div class="kpi-value-container">
+              <h2 class="kpi-value counter" data-target="0" id="kpi-production">
+                0
+              </h2>
+              <span class="kpi-unit">Toneladas</span>
+            </div>
+            <div class="kpi-trend" id="trend-container-production">
+              <i class="fa-solid fa-arrow-trend-up trend-icon"></i>
+              <span id="trend-production">0%</span> vs sem. anterior
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="kpi-card glass-panel fade-in-up"
+            style="--accent-color: #00ff87; animation-delay: 0.2s"
+          >
+            <div class="kpi-glow"></div>
+            <div class="kpi-header">
+              <span class="kpi-title">Rendimiento (Yield)</span>
+              <div class="kpi-icon"><i class="fa-solid fa-percent"></i></div>
+            </div>
+            <div class="kpi-value-container">
+              <h2 class="kpi-value counter" data-target="0" id="kpi-yield">
+                0
+              </h2>
+              <span class="kpi-unit">% Exportable</span>
+            </div>
+            <div class="kpi-trend" id="trend-container-yield">
+              <i class="fa-solid fa-arrow-trend-up trend-icon"></i>
+              <span id="trend-yield">0%</span> vs sem. anterior
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="kpi-card glass-panel fade-in-up"
+            style="--accent-color: #ff3a5e; animation-delay: 0.3s"
+          >
+            <div class="kpi-glow"></div>
+            <div class="kpi-header">
+              <span class="kpi-title">Descarte (Mermas)</span>
+              <div class="kpi-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+            </div>
+            <div class="kpi-value-container">
+              <h2 class="kpi-value counter" data-target="0" id="kpi-quality">
+                0
+              </h2>
+              <span class="kpi-unit">% del Ingreso</span>
+            </div>
+            <div class="kpi-trend" id="trend-container-quality">
+              <i class="fa-solid fa-arrow-trend-down trend-icon"></i>
+              <span id="trend-quality">0%</span> vs sem. anterior
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div
+            class="kpi-card glass-panel fade-in-up"
+            style="--accent-color: #fca211; animation-delay: 0.4s"
+          >
+            <div class="kpi-glow"></div>
+            <div class="kpi-header">
+              <span class="kpi-title">Eficiencia OEE</span>
+              <div class="kpi-icon"><i class="fa-solid fa-gears"></i></div>
+            </div>
+            <div class="kpi-value-container">
+              <h2 class="kpi-value counter" data-target="0" id="kpi-oee">0</h2>
+              <span class="kpi-unit">% Global</span>
+            </div>
+            <div class="kpi-trend" id="trend-container-oee">
+              <i class="fa-solid fa-arrow-trend-up trend-icon"></i>
+              <span id="trend-oee">0%</span> vs sem. anterior
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+          <!-- Main Chart -->
+          <div
+            class="chart-container glass-panel fade-in-up"
+            style="animation-delay: 0.5s"
+          >
+            <div class="chart-header">
+              <h3>
+                <i class="fa-solid fa-chart-line"></i> Volumen de Proceso Diario
+                (Toneladas)
+              </h3>
+            </div>
+            <div class="canvas-wrapper">
+              <canvas id="productionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Secondary Chart -->
+          <div
+            class="chart-container glass-panel fade-in-up"
+            style="animation-delay: 0.6s"
+          >
+            <div class="chart-header">
+              <h3>
+                <i class="fa-solid fa-chart-pie"></i> Distribución de Calidad
+              </h3>
+            </div>
+            <div class="canvas-wrapper doughnut-wrapper">
+              <canvas id="qualityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Table Section -->
+        <div
+          class="list-container glass-panel fade-in-up"
+          style="animation-delay: 0.7s"
+        >
+          <div class="list-header">
+            <h3>
+              <i class="fa-solid fa-server"></i> Estado en Vivo por Línea de
+              Proceso
+            </h3>
+          </div>
+          <div class="table-responsive">
+            <table class="status-table">
+              <thead>
+                <tr>
+                  <th>Línea</th>
+                  <th>Estado</th>
+                  <th>Eficiencia Actual</th>
+                  <th>Lote en Proceso</th>
+                </tr>
+              </thead>
+              <tbody id="lines-status-table">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Main Logic -->
+    <script src="app.js"></script>
+  </body>
+</html>
